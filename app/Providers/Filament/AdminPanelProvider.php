@@ -18,6 +18,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+// Tambahkan ini untuk plugin API Service
+use Rupadana\ApiService\ApiServicePlugin;
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -27,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->registration()
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -53,6 +57,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            // Tambahkan plugin API Service di sini
+            ->plugins([
+                ApiServicePlugin::make()
+                ->middleware(['auth:sanctum']),
             ]);
     }
 }
